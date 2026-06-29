@@ -1,50 +1,63 @@
 import random
 
-def game(comp, opponent):
-    if comp == opponent:
+def get_winner(comp, user):
+    """Returns True if User wins, False if Computer wins, None if Tie."""
+    if comp == user:
         return None
-    elif comp == 'r': 
-        if  opponent == 'p':
-            return True
-        elif opponent == 's':
-            return False
-    elif comp == 'p': 
-        if  opponent == 's':
-            return True
-        elif  opponent== 'r':
-            return False
-    elif comp == 's': 
-        if  opponent == 'r':
-            return True
-        elif opponent == 'p':
-            return False          
-print("comp turn : Rock(r) paper(p) scissor(s)")
-computer_s_choice = random.randint(1, 3)
-if computer_s_choice == 1:
-    comp = 'r'
-elif computer_s_choice == 2:
-    comp  =  'p'
-elif computer_s_choice == 3:
-    comp  = 's'
+        
+    # Winning combinations for the User
+    winning_rules = {
+        'r': 's',  # Rock beats Scissor
+        'p': 'r',  # Paper beats Rock
+        's': 'p'   # Scissor beats Paper
+    }
+    
+    if winning_rules[user] == comp:
+        return True
+    return False
 
-opponent = input("Enter r = Rock!, s = scissor! 0, p = paper!  :")
-if opponent == ("r"):
-    pass
-elif opponent == ("s"):
-    pass
-elif opponent == ("p"):
-    pass
-else:
-    print("you entered the  wrong word or uppercase letter please  check it once:")
+user_score = 0
+comp_score = 0
+total_matches = 0
 
-a = game(comp, opponent )
+print("=== Welcome to Rock, Paper, Scissors Game! ===")
 
-print(f"computer chosses {comp}")
-print(f"you chosse {opponent}")
+while True:
+    print(f"\n--- Round {total_matches + 1} ---")
+    
+    choices = ['r', 'p', 's']
+    comp = random.choice(choices)
 
-if a == None:
-    print("This game is Tie because your brain and computer's brain are compratively equaly sharp: ")
-elif a == True:
-    print("heyy Boss.... you are amazing  you defeat the computer :")
-elif a == False:
-    print("Better luck next time dear....")      
+    user = input("Enter r (Rock), p (Paper), s (Scissor): ").lower()
+
+    if user in choices:
+        total_matches += 1
+        result = get_winner(comp, user)
+        
+        print(f"Computer chose: {comp.upper()}")
+        print(f"You chose: {user.upper()}")
+
+        if result is None:
+            print(" It's a Tie! Both minds are equally sharp.")
+        elif result is True:
+            print(" Hey Boss! You are amazing, you defeated the computer!")
+            user_score += 1
+        else:
+            print(" Better luck next time, dear...")
+            comp_score += 1
+            
+        print(f"[Score -> You: {user_score} | Computer: {comp_score}]")
+    else:
+        print(" Invalid input! Please enter only r, p, or s.")
+
+    play_again = input("\nDo you want to play another round? (y/n): ").lower()
+    if play_again != 'y':
+        print("\n==========================================")
+        print(" FINAL GAME STATS:")
+        print(f"Total Matches Played: {total_matches}")
+        print(f"Your Wins: {user_score}")
+        print(f"Computer Wins: {comp_score}")
+        print(f"Ties: {total_matches - (user_score + comp_score)}")
+        print("==========================================")
+        print("Thank you for playing!  ")
+        break
