@@ -5,7 +5,6 @@ def get_winner(comp, user):
     if comp == user:
         return None
         
-    # Winning combinations for the User
     winning_rules = {
         'r': 's',  # Rock beats Scissor
         'p': 'r',  # Paper beats Rock
@@ -21,6 +20,7 @@ comp_score = 0
 total_matches = 0
 
 print("=== Welcome to Rock, Paper, Scissors Game! ===")
+print("Type 'x' anytime to exit the game.")
 
 while True:
     print(f"\n--- Round {total_matches + 1} ---")
@@ -28,30 +28,10 @@ while True:
     choices = ['r', 'p', 's']
     comp = random.choice(choices)
 
-    user = input("Enter r (Rock), p (Paper), s (Scissor): ").lower()
+    user = input("Enter r (Rock), p (Paper), s (Scissor), or x (Exit): ").lower()
 
-    if user in choices:
-        total_matches += 1
-        result = get_winner(comp, user)
-        
-        print(f"Computer chose: {comp.upper()}")
-        print(f"You chose: {user.upper()}")
-
-        if result is None:
-            print(" It's a Tie! Both minds are equally sharp.")
-        elif result is True:
-            print(" Hey Boss! You are amazing, you defeated the computer!")
-            user_score += 1
-        else:
-            print(" Better luck next time, dear...")
-            comp_score += 1
-            
-        print(f"[Score -> You: {user_score} | Computer: {comp_score}]")
-    else:
-        print(" Invalid input! Please enter only r, p, or s.")
-
-    play_again = input("\nDo you want to play another round? (y/n): ").lower()
-    if play_again != 'y':
+    # Exit option
+    if user == 'x':
         print("\n==========================================")
         print(" FINAL GAME STATS:")
         print(f"Total Matches Played: {total_matches}")
@@ -61,3 +41,21 @@ while True:
         print("==========================================")
         print("Thank you for playing!  ")
         break
+
+    if user in choices:
+        total_matches += 1
+        result = get_winner(comp, user)
+        
+        print(f"Computer chose: {comp.upper()}")
+        print(f"You chose: {user.upper()}")
+
+        if result is None:
+            print(" It's a Tie!")
+        elif result is True:
+            print(" You win this round!")
+            user_score += 1
+        else:
+            print(" Computer wins this round!")
+            comp_score += 1
+    else:
+        print(" Invalid input! Please enter only r, p, s, or x.")
